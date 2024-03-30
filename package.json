@@ -4,11 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "author": "Tom K",
   "license": "ISC",
   "devDependencies": {
+    "chai": "*",
     "mocha": "^10.4.0"
   }
 }
