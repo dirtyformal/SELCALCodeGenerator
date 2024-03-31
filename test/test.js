@@ -74,6 +74,43 @@ describe('SELCAL Code Check', function() {
 
   });
 
+  describe('SELCAL 32 code generation', function() {
+
+    it('Should only contain valid SELCAL 32 characters (A-Z, 1-9, no ION)', function() {
+      let res = getSingleSelcal(true);
+      let letters = res.replace('-', '');
+      assert.match(letters, /^[A-HJ-NP-Z1-9]{4}$/);
+    });
+
+    it('Should not contain any invalid characters', function() {
+      let res = getSingleSelcal(true);
+      let letters = res.replace('-', '');
+      assert.notMatch(letters, /[^A-HJ-NP-Z1-9]/);
+    });
+
+  });
+
+  describe('Handling of invalid input', function() {
+
+    it('Should throw an error when passed an invalid parameter', function() {
+      assert.throws(() => getSingleSelcal('invalid'), Error);
+    });
+
+  });
+
+  describe('Bulk Generation of SELCAL Codes', function() {
+    it('Should generate five distinct SELCAL codes', function() {
+      const codes = new Array(5).fill(null).map(() => getSingleSelcal());
+      const uniqueCodes = [ ...new Set(codes)];
+      expect(uniqueCodes.length).to.equal(codes.length);
+    });
+
+    it('Should generate five distinct SELCAL32 codes', function() {
+      const codes = new Array(5).fill(null).map(() => getSingleSelcal(true));
+      const uniqueCodes = [...new Set(codes)];
+      expect(uniqueCodes.length).to.equal(codes.length);
+    });
+
+  });
+
 });
-
-
