@@ -63,7 +63,7 @@ describe('SELCAL Code Check', function() {
         assert.deepEqual(letters, uniqueLetters);
       });
 
-      it('Each two-letter pair should be in alphabetical order', function() {
+      it('Should have each two-letter pair in alphabetical order', function() {
         let pairs = res.split('-');
         pairs.forEach(pair => {
           let letters = pair.split('');
