@@ -37,6 +37,14 @@ This project includes a suite of tests to ensure correct functionality. To run t
 npm test
 ```
 
+## Roadmap
+
+I am looking to add:
+
+- **Batch Code Generation**: A function to generate a batch of unique SELCAL or SELCAL 32 codes, or a mixture of.
+- **Code Validation**: A function to validate a given SELCAL or SELCAL 32 code.
+- **Add to NPM**: Add to NPM as a package.
+
 ## Contributing
 
 Contributions are welcome.
