@@ -4,15 +4,14 @@ import 'chai/register-should.js';
 
 import { getSingleSelcal } from "../index.js";
 
-describe('SELCAL Code Check', function() {
-  let res;
+describe('SELCAL Code Generation', function() {
+  describe('Normal SELCAL Code', function() {
+    let res;
 
-  before(function() {
-    res = getSingleSelcal();
-    console.log(`The test code is: ${res}`);
-  });
-
-  describe('Return a single SELCAL Code', function() {
+    before(function() {
+      res = getSingleSelcal();
+      console.log(`The test SELCAL code is: ${res}`);
+    });
 
     describe('Formatting Checks', function() {
 
@@ -45,13 +44,9 @@ describe('SELCAL Code Check', function() {
       it('Should be in uppercase', function() {
         assert.equal(res, res.toUpperCase());
       });
-
-      
-
     });
 
     describe('SELCAL code shall be legal', function() {
-
       it('Should only contain valid SELCAL characters (A-S, no ION)', function() {
         let letters = res.replace('-', '');
         assert.match(letters, /^[A-HJ-NP-S]{4}$/);
@@ -74,26 +69,32 @@ describe('SELCAL Code Check', function() {
 
   });
 
-  describe('SELCAL 32 code generation', function() {
+  describe('SELCAL 32 Code', function() {
+    let res;
 
-    it('Should only contain valid SELCAL 32 characters (A-Z, 1-9, no ION)', function() {
-      let res = getSingleSelcal(true);
-      let letters = res.replace('-', '');
-      assert.match(letters, /^[A-HJ-NP-Z1-9]{4}$/);
+    before(function() {
+      res = getSingleSelcal(true);
+      console.log(`The test SELCAL32 code is: ${res}`);
     });
 
-    it('Should not contain any invalid characters', function() {
-      let res = getSingleSelcal(true);
-      let letters = res.replace('-', '');
-      assert.notMatch(letters, /[^A-HJ-NP-Z1-9]/);
+    describe('SELCAL 32 code generation', function() {
+      it('Should only contain valid SELCAL 32 characters (A-Z, 1-9, no ION)', function() {
+        let res = getSingleSelcal(true);
+        let letters = res.replace('-', '');
+        assert.match(letters, /^[A-HJ-NP-Z1-9]{4}$/);
+      });
+  
+      it('Should not contain any invalid characters', function() {
+        let res = getSingleSelcal(true);
+        let letters = res.replace('-', '');
+        assert.notMatch(letters, /[^A-HJ-NP-Z1-9]/);
+      });
     });
 
-  });
-
-  describe('Handling of invalid input', function() {
-
-    it('Should throw an error when passed an invalid parameter', function() {
-      assert.throws(() => getSingleSelcal('invalid'), Error);
+    describe('Handling of invalid input', function() {
+      it('Should throw an error when passed an invalid parameter', function() {
+        assert.throws(() => getSingleSelcal('invalid'), Error);
+      });
     });
 
   });
@@ -112,5 +113,4 @@ describe('SELCAL Code Check', function() {
     });
 
   });
-
 });
