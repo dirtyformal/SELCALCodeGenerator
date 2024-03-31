@@ -8,8 +8,9 @@
   },
   "author": "Tom K",
   "license": "ISC",
+  "type": "module",
   "devDependencies": {
-    "chai": "*",
+    "chai": "^5.1.0",
     "mocha": "^10.4.0"
   }
 }
