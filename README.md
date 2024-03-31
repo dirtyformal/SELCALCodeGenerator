@@ -7,7 +7,7 @@ This project is a simple SELCAL and SELCAL 32 code generator.
 - Generate a single SELCAL code
 - Generate a single SELCAL 32 code
 - Generate a batch of SELCAL codes
-- Generate a batch of SELCEL and SELCEL 32 codes
+- Generate a batch of SELCAL and SELCAL 32 codes
 
 ## Usage
 
@@ -37,7 +37,7 @@ To generate a SELCAL 32 code ([refer to ASRI program documentation](https://asri
 
 ### Batch of SELCAL Codes:
 
-To generate a batch of SELCEL codes, call the `generateBatch` function with the number of codes you want to generate:
+To generate a batch of SELCAL codes, call the `generateBatch` function with the number of codes you want to generate:
 
 ```javascript
 const selcalCodes = generateBatch(10);
@@ -46,7 +46,7 @@ console.log(selcalCodes) // Outputs an array of 10 SELCAL codes
 
 ### Batch of SELCAL 32 Codes:
 
-To generate a batch of SELCEL and SELCEL 32 codes, call the `generateBatch` function with the number of codes you want to generate, and `true` as the second argument.
+To generate a batch of SELCAL and SELCAL 32 codes, call the `generateBatch` function with the number of codes you want to generate, and `true` as the second argument.
 
 **Note**: This will generate *both* SELCAL and SELCAL32 codes. As these are random, there is every chance you will not have a SELCAL 32 code generated. 
 
