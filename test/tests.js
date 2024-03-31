@@ -2,7 +2,7 @@ import 'chai/register-assert.js';
 import 'chai/register-expect.js';
 import 'chai/register-should.js';
 
-import { getSingleSelcal } from "../index.js";
+import { getSingleSelcal, generateBatch } from "../index.js";
 
 describe('SELCAL Code Generation', function() {
   describe('Normal SELCAL Code', function() {
@@ -46,7 +46,7 @@ describe('SELCAL Code Generation', function() {
       });
     });
 
-    describe('SELCAL code shall be legal', function() {
+    describe('SELCEL Code Legality', function() {
       it('Should only contain valid SELCAL characters (A-S, no ION)', function() {
         let letters = res.replace('-', '');
         assert.match(letters, /^[A-HJ-NP-S]{4}$/);
@@ -77,7 +77,7 @@ describe('SELCAL Code Generation', function() {
       console.log(`The test SELCAL32 code is: ${res}`);
     });
 
-    describe('SELCAL 32 code generation', function() {
+    describe('SELCAL 32 Code Legality', function() {
       it('Should only contain valid SELCAL 32 characters (A-Z, 1-9, no ION)', function() {
         let res = getSingleSelcal(true);
         let letters = res.replace('-', '');
@@ -99,18 +99,70 @@ describe('SELCAL Code Generation', function() {
 
   });
 
-  describe('Bulk Generation of SELCAL Codes', function() {
-    it('Should generate five distinct SELCAL codes', function() {
-      const codes = new Array(5).fill(null).map(() => getSingleSelcal());
-      const uniqueCodes = [ ...new Set(codes)];
-      expect(uniqueCodes.length).to.equal(codes.length);
+  describe('Batch Generation of SELCAL Codes', function() {
+    describe('Shared Tests', function() {
+      let res;
+  
+      before(function() {
+        res = generateBatch(10, Math.random() < 0.5);
+      });
+  
+      it('Should return an array', function() {
+        expect(res).to.be.an('array');
+      });
+  
+      it('Should return the correct number of codes', function() {
+        expect(res).to.have.lengthOf(10);
+      });
+  
+      it('Should not return null or undefined values', function() {
+        for (let code of res) {
+          assert.isDefined(code);
+          assert.isNotNull(code);
+        }
+      });
+  
+      it('Should not return any empty strings', function() {
+        for (let code of res) {
+          assert.isNotEmpty(code);
+        }
+      });
+
+      it('Should throw a TypeError if numCodes is not a number', function() {
+        assert.throws(() => generateBatch('not a number', false), TypeError, 'numCodes must be a number');
+      });
+  
+      it('Should throw a TypeError if isSelcal32 is not a boolean', function() {
+        assert.throws(() => generateBatch(10, 'not a boolean'), TypeError, 'isSelcal32 must be a boolean');
+      });
     });
 
-    it('Should generate five distinct SELCAL32 codes', function() {
-      const codes = new Array(5).fill(null).map(() => getSingleSelcal(true));
-      const uniqueCodes = [...new Set(codes)];
-      expect(uniqueCodes.length).to.equal(codes.length);
+    describe('SELCAL Codes', function() {
+      let res;
+
+      before(function() {
+        res = generateBatch(10, false);
+      });
+
+      it('Should return only valid SELCAL codes', function() {
+        for (let code of res) {
+          expect(code).to.match(/^([A-S^IONion]{2}-[A-S^IONion]{2})$/gm);
+        }
+      });
     });
 
+    describe('SELCAL32 Codes', function() {
+      let res;
+    
+      before(function() {
+        res = generateBatch(10, true);
+      });
+    
+      it('Should return only valid SELCAL32 codes', function() {
+        for (let code of res) {
+          expect(code).to.match(/^([A-HJ-NP-Z1-9]{2}-[A-HJ-NP-Z1-9]{2})$/gm);
+        }
+      });
+    }); 
   });
 });

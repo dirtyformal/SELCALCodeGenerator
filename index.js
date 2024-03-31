@@ -25,3 +25,18 @@ export function getSingleSelcal(selcal32 = false) {
 
   return `${firstPair.join('')}-${secondPair.join('')}`;
 }
+
+export function generateBatch(numCodes, isSelcal32 = false) {
+  if (typeof numCodes !== 'number') {
+    throw new TypeError('numCodes must be a number');
+  }
+  if (typeof isSelcal32 !== 'boolean') {
+    throw new TypeError('isSelcal32 must be a boolean');
+  }
+
+  const codes = [];
+  for (let i = 0; i < numCodes; i++) {
+    codes.push(getSingleSelcal(isSelcal32));
+  }
+  return codes;
+}
