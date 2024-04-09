@@ -2,15 +2,14 @@ import 'chai/register-assert.js';
 import 'chai/register-expect.js';
 import 'chai/register-should.js';
 
-import { getSingleSelcal, generateBatch } from "../index.js";
+import { getSingleSelcal, generateBatch, isValidSelcalCode } from "../index.js";
 
 describe('SELCAL Code Generation', function() {
-  describe('Normal SELCAL Code', function() {
+  describe('getSingleSelcal()', function() {
     let res;
 
     before(function() {
       res = getSingleSelcal();
-      console.log(`The test SELCAL code is: ${res}`);
     });
 
     describe('Formatting Checks', function() {
@@ -69,12 +68,11 @@ describe('SELCAL Code Generation', function() {
 
   });
 
-  describe('SELCAL 32 Code', function() {
+  describe('getSingleSelcal(true)', function() {
     let res;
 
     before(function() {
       res = getSingleSelcal(true);
-      console.log(`The test SELCAL32 code is: ${res}`);
     });
 
     describe('SELCAL 32 Code Legality', function() {
@@ -99,7 +97,7 @@ describe('SELCAL Code Generation', function() {
 
   });
 
-  describe('Batch Generation of SELCAL Codes', function() {
+  describe('generateBatch()', function() {
     describe('Shared Tests', function() {
       let res;
   
@@ -137,7 +135,7 @@ describe('SELCAL Code Generation', function() {
       });
     });
 
-    describe('SELCAL Codes', function() {
+    describe('generateBatch()', function() {
       let res;
 
       before(function() {
@@ -151,7 +149,7 @@ describe('SELCAL Code Generation', function() {
       });
     });
 
-    describe('SELCAL32 Codes', function() {
+    describe('generateBatch(true)', function() {
       let res;
     
       before(function() {
@@ -165,4 +163,39 @@ describe('SELCAL Code Generation', function() {
       });
     }); 
   });
+
+  describe('isValidSelcalCode()', function() {
+    it('should return a correctly formatted object for a generated valid SELCAL code', function() {
+      let genSelcalCode = getSingleSelcal();
+      let res = isValidSelcalCode(genSelcalCode);
+      assert.deepEqual(res, { code: genSelcalCode, isValid: true, selcalCodeType: 'selcal', note: null  });
+    });
+
+    it('should return a correctly formatted object for a generated valid SELCAL32 code', function() {
+      let genSelcal32Code = getSingleSelcal(true);
+      let res = isValidSelcalCode(genSelcal32Code);
+      assert.deepEqual(res, { code: genSelcal32Code, isValid: true, selcalCodeType: 'selcal32', note: null  })
+    });
+
+    it('should return correct invalid object for non-string inputs', function() {
+      let res = isValidSelcalCode(6666);
+      assert.deepEqual(res, { code: 6666, isValid: false, note: 'code is not a string' } );
+    });
+
+    it('should return correct invalid object for invalid SELCAL codes', function() {
+
+      let duplicateChar = isValidSelcalCode('AB-CC');
+      assert.deepEqual(duplicateChar, { code: 'AB-CC', isValid: false, note: 'Characters are repeated' } );
+
+      let lettersNotSeq = isValidSelcalCode('AB-DC');
+      assert.deepEqual(lettersNotSeq, { code: 'AB-DC', isValid: false, note: 'Letters not sequential', selcalCodeType: 'selcal' } );
+
+      let numbersNotSeq = isValidSelcalCode('21-AB');
+      assert.deepEqual(numbersNotSeq, { code: '21-AB', isValid: false, note: 'Numbers not sequential', selcalCodeType: 'selcal32' });
+
+    });
+  });
+
+
+
 });
