@@ -8,13 +8,14 @@ This project is a simple SELCAL and SELCAL 32 code generator.
 - Generate a single SELCAL 32 code
 - Generate a batch of SELCAL codes
 - Generate a batch of SELCAL and SELCAL 32 codes
+- Validate SELCAL codes
 
 ## Usage
 
-Import the `getSingleSelcal` and `generateBatch` functions from the `index.js` file.
+Import the `getSingleSelcal`, `generateBatch` and `validateSelcal` functions from the `index.js` file.
 
 ```javascript
-import { getSingleSelcal, generateBatch } from './index.js';
+import { getSingleSelcal, generateBatch, isValidSelcalCode } from './index.js';
 ```
 
 ### Single SELCAL Code:
@@ -55,6 +56,26 @@ const selcal32Codes = generateBatch(10, true);
 console.log(selcal32Codes) // Outputs an array of 10 SELCAL and SELCAL 32 codes
 ```
 
+### Validate SELCAL codes
+
+To validate a SELCAL code, call the `isValidSelcalCode()` function, with the code you would like to validate. The function is expecting a string, following the format `XX-XX`.
+
+```javascript
+const validSelcalReturnObj = isValidSelcalCode('AB-CD');
+console.log(validSelcalReturnObj) // Logs an object containing various return parameters
+```
+
+The validation function will return a object, with the following keys:
+
+``` javascript
+{
+  code: {string}, // Original SELCAL code string passed into the function
+  isValid: {Boolean}, // Will return true if the code passes all validation checks, and false if it fails any.
+  selcalCodeType: {string}, // Will return a string containing the SELCAL code type. either 'selcal' or 'selcal32'.
+  note: null // Returns null by default. If validation has failed, it be a string containing the reason for validation failure.
+}
+```
+
 
 
 ## Testing
@@ -73,7 +94,7 @@ I am looking to add:
 - **Advanced Batch Generation**: Generate a given number of codes, with an explicit number of each type. For example, 30 codes, where 12 are SELCAL 32 codes.
   - This will likely require me to split out SELCAL and SELCAL 32 generation into their own discrete functions.
 - **Code Generation with Constraints**: An option to generate codes that meet certain constraints, such as starting with certain characters.
-- **Code Validation**: A function to validate a given SELCAL or SELCAL 32 code.
+- ~~**Code Validation**: A function to validate a given SELCAL or SELCAL 32 code.~~
 - **Add to NPM**: Add to NPM as a package.
 
 ## Contributing
